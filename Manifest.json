@@ -1,0 +1,16 @@
+‎{
+‎  "name": "NALDO GRAFIC DESING",
+‎  "short_name": "NaldoGrafic",
+‎  "start_url": "naldo_grafic_desing_pwa.html",
+‎  "display": "standalone",
+‎  "background_color": "#0a0f1d",
+‎  "theme_color": "#0284c7",
+‎  "icons": [
+‎    {
+‎      "src": "1000293715.jpg",
+‎      "sizes": "512x512",
+‎      "type": "image/jpeg"
+‎    }
+‎  ]
+‎}
+‎
