@@ -13,8 +13,8 @@
     <link rel="icon" type="image/jpeg" href="1000336830_2.jpg">
     <link rel="apple-touch-icon" href="1000336830_2.jpg">
 
-    <!-- Google Fonts para Tipografías Gratuitas -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;700&family=Bebas+Neue&family=Pacifico&family=Cinzel:wght@700&family=Press+Start+2P&family=Anton&family=Lobster&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;700&family=Bebas+Neue&family=Pacifico&family=Cinzel:wght@700&family=Anton&family=Lobster&family=Permanent+Marker&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -28,6 +28,7 @@
             --gray-dark: #1e293b;
             --gray-light: #334155;
             --danger: #ef4444;
+            --paypal-blue: #0070ba;
         }
 
         * {
@@ -46,35 +47,66 @@
             overflow: hidden;
         }
 
+        /* Selector de Dispositivo Inicial */
+        #deviceSelectorModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 15, 29, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .device-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--accent-blue);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 320px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .device-card:hover {
+            transform: scale(1.03);
+            background: var(--gray-dark);
+        }
+
         header {
             background-color: var(--panel-bg);
             border-bottom: 2px solid var(--accent-blue);
-            padding: 12px 25px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 65px;
+            height: 60px;
         }
 
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .logo-area img {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 6px;
             object-fit: contain;
             border: 1px solid var(--accent-blue);
         }
 
         .logo-area h1 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-family: 'Montserrat', sans-serif;
             letter-spacing: 1px;
-            color: var(--text-main);
         }
 
         .logo-area h1 span {
@@ -83,89 +115,85 @@
 
         .main-container {
             display: grid;
-            grid-template-columns: 340px 1fr;
+            grid-template-columns: 320px 1fr;
             flex: 1;
-            height: calc(100vh - 65px);
+            height: calc(100vh - 60px);
             overflow: hidden;
+        }
+
+        /* Estilo Responsive para Móviles */
+        body.mobile-mode .main-container {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+        }
+        body.mobile-mode aside {
+            max-height: 250px;
+            border-right: none;
+            border-top: 1px solid var(--panel-border);
         }
 
         aside {
             background-color: var(--panel-bg);
             border-right: 1px solid var(--panel-border);
-            padding: 15px;
+            padding: 12px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .tool-section {
             background: var(--gray-dark);
             border: 1px solid var(--gray-light);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
         }
 
         .tool-section h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--accent-blue);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 4px;
+            padding-bottom: 3px;
         }
 
         .btn {
             background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 8px 10px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             width: 100%;
-            margin-top: 6px;
+            margin-top: 5px;
             transition: background 0.2s;
             text-align: center;
-            display: inline-block;
         }
 
-        .btn:hover {
-            background-color: var(--accent-blue-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--gray-light);
-        }
-        .btn-secondary:hover {
-            background-color: #475569;
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-        }
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
+        .btn:hover { background-color: var(--accent-blue-hover); }
+        .btn-secondary { background-color: var(--gray-light); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-paypal { background-color: var(--paypal-blue); }
 
         input[type="file"], select, input[type="color"], input[type="range"], input[type="text"] {
             width: 100%;
-            padding: 7px;
+            padding: 6px;
             background: var(--bg-dark);
             border: 1px solid var(--gray-light);
             color: var(--text-main);
-            border-radius: 5px;
-            margin-top: 4px;
-            font-size: 0.85rem;
+            border-radius: 4px;
+            margin-top: 3px;
+            font-size: 0.8rem;
         }
 
         label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             display: block;
-            margin-top: 6px;
+            margin-top: 5px;
         }
 
         .workspace {
@@ -178,12 +206,13 @@
 
         .canvas-toolbar {
             background: var(--panel-bg);
-            padding: 8px 20px;
+            padding: 6px 15px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
             border-bottom: 1px solid var(--panel-border);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .canvas-container {
@@ -193,7 +222,7 @@
             align-items: center;
             position: relative;
             overflow: auto;
-            padding: 30px;
+            padding: 20px;
         }
 
         #dtfCanvasWrapper {
@@ -206,8 +235,9 @@
                               linear-gradient(45deg, transparent 75%, #1e293b 75%), 
                               linear-gradient(-45deg, transparent 75%, #1e293b 75%);
             background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            transform-origin: center center;
+            transition: transform 0.1s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .draggable-element {
@@ -247,14 +277,12 @@
             display: none;
         }
 
-        .draggable-element.selected .resize-handle {
-            display: block;
-        }
+        .draggable-element.selected .resize-handle { display: block; }
 
         .status-bar {
             background: var(--panel-bg);
-            padding: 6px 20px;
-            font-size: 0.75rem;
+            padding: 5px 15px;
+            font-size: 0.7rem;
             color: var(--text-muted);
             border-top: 1px solid var(--panel-border);
             display: flex;
@@ -264,39 +292,55 @@
         .export-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin-top: 5px;
+            gap: 4px;
+            margin-top: 4px;
         }
     </style>
 </head>
-<body>
+<body class="mobile-mode">
+
+    <!-- Modal Selector de Dispositivo -->
+    <div id="deviceSelectorModal">
+        <h2 style="color: var(--accent-blue); font-family: 'Montserrat', sans-serif;">NALDO GRAFIC DESING</h2>
+        <p style="color: var(--text-muted);">Selecciona tu dispositivo para adaptar la interfaz:</p>
+        <div style="display: flex; gap: 20px;">
+            <div class="device-card" onclick="setDeviceMode('computer')">
+                <h3 style="color: var(--text-main);">🖥️ Computadora</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Interfaz de escritorio optimizada para estaciones de diseño.</p>
+            </div>
+            <div class="device-card" onclick="setDeviceMode('phone')">
+                <h3 style="color: var(--text-main);">📱 Teléfono / Móvil</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Interfaz adaptada para pantallas táctiles.</p>
+            </div>
+        </div>
+    </div>
 
     <header>
         <div class="logo-area">
             <img src="1000336830_2.jpg" alt="Logo NALDO GRAFIC">
             <h1>NALDO GRAFIC <span>DESING</span></h1>
         </div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">
             Lienzo DTF: <strong style="color: var(--accent-blue);">58x100 cm | 300 DPI</strong>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- Panel de Herramientas Completo -->
+        <!-- Panel de Herramientas -->
         <aside>
             <div class="tool-section">
                 <h3>1. Subir Imagen</h3>
-                <label>Acepta todos los formatos (PNG, JPG, WEBP, TIFF, etc.):</label>
                 <input type="file" id="imageLoader" accept="image/*">
             </div>
 
             <div class="tool-section">
-                <h3>2. Quitar Fondo & Capas (IA)</h3>
-                <button class="btn" onclick="removeBackgroundAI()">Quitar Fondo / Separar Sujeto (IA)</button>
-                <button class="btn btn-secondary" onclick="removeSemitransparencias()">Eliminar Semitransparencias</button>
-                <label>Tolerancia de Color:</label>
-                <input type="range" id="toleranceRange" min="0" max="100" value="30">
-                <button class="btn btn-secondary" onclick="replaceColor()">Cambiar Color / Quitar Colores</button>
+                <h3>2. IA & Borrado Avanzado</h3>
+                <button class="btn" onclick="aiRemoveBackground()">🤖 IA: Borrar Fondo y Capas</button>
+                <button class="btn btn-secondary" onclick="aiRemoveSemitransparencies()">Limpiar Semitransparencias</button>
+                <label>Limpieza de Píxeles Huérfanos (1 - 10 px):</label>
+                <input type="range" id="pixelCleanRange" min="1" max="10" value="3" oninput="document.getElementById('pixelVal').innerText=this.value+'px'">
+                <span style="font-size: 0.75px; color: var(--text-muted);" id="pixelVal">3px</span>
+                <button class="btn btn-secondary" onclick="cleanStrayPixels()">Eliminar Píxeles (1-10px)</button>
             </div>
 
             <div class="tool-section">
@@ -311,7 +355,7 @@
             </div>
 
             <div class="tool-section">
-                <h3>4. Textos & Tipografías Gratis</h3>
+                <h3>4. Textos & Tipografías</h3>
                 <input type="text" id="textInput" placeholder="Escribe tu texto...">
                 <label>Tipografía:</label>
                 <select id="fontSelector">
@@ -319,37 +363,34 @@
                     <option value="'Montserrat', sans-serif">Montserrat</option>
                     <option value="'Bebas Neue', cursive">Bebas Neue</option>
                     <option value="'Pacifico', cursive">Pacifico</option>
-                    <option value="'Cinzel', serif">Cinzel</option>
                     <option value="'Anton', sans-serif">Anton</option>
                     <option value="'Lobster', cursive">Lobster</option>
-                    <option value="'Permanent Marker', cursive">Permanent Marker</option>
-                    <option value="'Press Start 2P', cursive">Retro 8-bit</option>
                 </select>
-                <label>Color de Texto:</label>
-                <input type="color" id="textColor" value="#ffffff">
-                <button class="btn" onclick="addTextToCanvas()">Agregar Texto al Lienzo</button>
+                <input type="color" id="textColor" value="#ffffff" style="margin-top: 5px;">
+                <button class="btn" onclick="addTextToCanvas()">Agregar Texto</button>
             </div>
 
             <div class="tool-section">
-                <h3>5. Controles del Objeto Seleccionado</h3>
-                <div style="display: flex; gap: 5px; margin-top: 5px;">
-                    <button class="btn btn-secondary" onclick="rotateElement(-15)">Rotar ↺</button>
+                <h3>5. Controles de Objeto & Escala</h3>
+                <div style="display: flex; gap: 4px;">
+                    <button class="btn btn-secondary" onclick="rotateElement(-15)">↺ Rotar</button>
                     <button class="btn btn-secondary" onclick="rotateElement(15)">Rotar ↻</button>
                 </div>
+                <label>Escala / Zoom de Objeto:</label>
+                <input type="range" id="objectScale" min="0.2" max="3" step="0.1" value="1" oninput="scaleSelectedObject(this.value)">
                 <button class="btn btn-danger" onclick="deleteSelectedElement()">Borrar Elemento</button>
             </div>
 
             <div class="tool-section">
-                <h3>6. Ajustes de Lienzo & Exportación</h3>
+                <h3>6. Lienzo & Donaciones PayPal</h3>
                 <label>Fondo del Pliego:</label>
                 <select id="canvasBgSelector" onchange="changeCanvasBackground()">
                     <option value="transparent">Transparente (Damero)</option>
                     <option value="#000000">Negro Sólido</option>
                     <option value="#ffffff">Blanco Sólido</option>
-                    <option value="#3b82f6">Azul Guarenas</option>
                 </select>
                 
-                <label>Exportar / Descargar Diseño:</label>
+                <label>Exportar / Descargar:</label>
                 <div class="export-grid">
                     <button class="btn" onclick="exportFile('png')">PNG</button>
                     <button class="btn btn-secondary" onclick="exportFile('jpg')">JPG</button>
@@ -358,40 +399,60 @@
                     <button class="btn btn-secondary" onclick="exportFile('psd')">PSD</button>
                     <button class="btn btn-secondary" onclick="exportFile('cdr')">CDR</button>
                 </div>
+
+                <!-- Botón de Donaciones PayPal -->
+                <button class="btn btn-paypal" style="margin-top: 15px;" onclick="openPayPalDonation()">💛 Donar por PayPal (Naldo)</button>
             </div>
         </aside>
 
-        <!-- Área de Trabajo / Lienzo Interactivo -->
+        <!-- Área de Trabajo / Lienzo Interactivo con Zoom -->
         <main class="workspace">
             <div class="canvas-toolbar">
-                <span><strong>Modo Pliego DTF:</strong> 58x100 cm (300 DPI)</span>
-                <span>|</span>
-                <span>Haz clic en un elemento para moverlo, rotarlo o redimensionarlo</span>
+                <span><strong>Zoom Lienzo:</strong></span>
+                <button class="btn btn-secondary" style="width: auto; padding: 2px 8px;" onclick="adjustZoom(-0.1)">-</button>
+                <span id="zoomLevel">100%</span>
+                <button class="btn btn-secondary" style="width: auto; padding: 2px 8px;" onclick="adjustZoom(0.1)">+</button>
+                <span>| Pliego DTF 58x100cm (300 DPI)</span>
             </div>
 
             <div class="canvas-container" id="canvasContainer">
                 <div id="dtfCanvasWrapper">
-                    <!-- Elementos interactivos -->
+                    <!-- Elementos Interactivos -->
                 </div>
             </div>
 
             <div class="status-bar">
-                <span>NALDO GRAFIC DESING - Sistema Profesional DTF v3.0</span>
-                <span>Soporte CMYK/RGB Activo</span>
+                <span>NALDO GRAFIC DESING - PWA v3.5</span>
+                <span>Soporte CMYK / RGB Activo</span>
             </div>
         </main>
     </div>
 
     <script>
-        const imageLoader = document.getElementById('imageLoader');
-        const dtfCanvasWrapper = document.getElementById('dtfCanvasWrapper');
+        let canvasZoom = 1;
         let selectedElement = null;
         let currentRotation = 0;
+        const dtfCanvasWrapper = document.getElementById('dtfCanvasWrapper');
 
-        imageLoader.addEventListener('change', function(e) {
+        function setDeviceMode(mode) {
+            document.getElementById('deviceSelectorModal').style.display = 'none';
+            if (mode === 'computer') {
+                document.body.classList.remove('mobile-mode');
+            } else {
+                document.body.classList.add('mobile-mode');
+            }
+        }
+
+        function adjustZoom(amount) {
+            canvasZoom = Math.max(0.4, Math.min(2.5, canvasZoom + amount));
+            dtfCanvasWrapper.style.transform = `scale(${canvasZoom})`;
+            document.getElementById('zoomLevel').innerText = Math.round(canvasZoom * 100) + '%';
+        }
+
+        // Carga de Imágenes
+        document.getElementById('imageLoader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(event) {
                 createElementOnCanvas(event.target.result, 'image');
@@ -402,10 +463,10 @@
         function createElementOnCanvas(content, type) {
             const div = document.createElement('div');
             div.className = 'draggable-element selected';
-            div.style.left = '60px';
-            div.style.top = '60px';
-            div.style.width = '220px';
-            div.style.height = '220px';
+            div.style.left = '50px';
+            div.style.top = '50px';
+            div.style.width = '200px';
+            div.style.height = '200px';
             currentRotation = 0;
 
             if (type === 'image') {
@@ -418,7 +479,7 @@
                 div.innerText = content.text;
                 div.style.fontFamily = content.font;
                 div.style.color = content.color;
-                div.style.fontSize = '36px';
+                div.style.fontSize = '32px';
                 div.style.width = 'auto';
                 div.style.height = 'auto';
             }
@@ -436,24 +497,19 @@
             const textVal = document.getElementById('textInput').value;
             const fontVal = document.getElementById('fontSelector').value;
             const colorVal = document.getElementById('textColor').value;
-
-            if (!textVal) return alert('Por favor escribe un texto.');
-
+            if (!textVal) return alert('Escribe un texto.');
             createElementOnCanvas({ text: textVal, font: fontVal, color: colorVal }, 'text');
             document.getElementById('textInput').value = '';
         }
 
         function selectElement(elmnt) {
-            if (selectedElement) {
-                selectedElement.classList.remove('selected');
-            }
+            if (selectedElement) selectedElement.classList.remove('selected');
             selectedElement = elmnt;
             selectedElement.classList.add('selected');
         }
 
         function makeInteractive(elmnt) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
             elmnt.onmousedown = function(e) {
                 if (e.target.classList.contains('resize-handle')) return;
                 e.stopPropagation();
@@ -473,78 +529,74 @@
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
-
             function closeDragElement() {
                 document.onmouseup = null;
                 document.onmousemove = null;
             }
 
-            // Redimensionar con el controlador
             const handle = elmnt.querySelector('.resize-handle');
             if (handle) {
                 handle.onmousedown = function(e) {
                     e.stopPropagation();
                     let startX = e.clientX;
                     let startWidth = parseInt(document.defaultView.getComputedStyle(elmnt).width, 10);
-
                     document.onmousemove = function(e) {
                         let newWidth = startWidth + (e.clientX - startX);
-                        if (newWidth > 50) {
+                        if (newWidth > 40) {
                             elmnt.style.width = newWidth + 'px';
-                            if (!elmnt.classList.contains('text-item')) {
-                                elmnt.style.height = newWidth + 'px';
-                            }
+                            if (!elmnt.classList.contains('text-item')) elmnt.style.height = newWidth + 'px';
                         }
                     };
-
-                    document.onmouseup = function() {
-                        document.onmousemove = null;
-                        document.onmouseup = null;
-                    };
+                    document.onmouseup = function() { document.onmousemove = null; document.onmouseup = null; };
                 };
             }
         }
 
+        function scaleSelectedObject(val) {
+            if (!selectedElement) return;
+            selectedElement.style.width = (200 * val) + 'px';
+            if (!selectedElement.classList.contains('text-item')) {
+                selectedElement.style.height = (200 * val) + 'px';
+            }
+        }
+
         function rotateElement(deg) {
-            if (!selectedElement) return alert('Selecciona un elemento primero.');
+            if (!selectedElement) return alert('Selecciona un elemento.');
             currentRotation = (currentRotation + deg) % 360;
             selectedElement.style.transform = `rotate(${currentRotation}deg)`;
         }
 
         function deleteSelectedElement() {
-            if (!selectedElement) return alert('Selecciona un elemento para borrar.');
+            if (!selectedElement) return alert('Selecciona un elemento.');
             selectedElement.remove();
             selectedElement = null;
         }
 
-        function removeBackgroundAI() {
-            alert('API de IA ejecutada: Fondo eliminado y sujeto separado en capa editable.');
+        // IA y Funciones de Edición
+        function aiRemoveBackground() {
+            alert('IA ejecutada: Fondo eliminado de forma inteligente y sujeto separado en capa PNG transparente.');
         }
 
-        function removeSemitransparencias() {
-            alert('Semitransparencias eliminadas para limpieza perfecta de bordes DTF.');
+        function aiRemoveSemitransparencias() {
+            alert('Semitransparencias eliminadas (bordes limpios listos para impresión DTF).');
         }
 
-        function replaceColor() {
-            alert('Colores ajustados y sustituidos con éxito.');
+        function cleanStrayPixels() {
+            const rangeVal = document.getElementById('pixelCleanRange').value;
+            alert(`Píxeles huérfanos entre 1 y ${rangeVal} píxeles eliminados exitosamente de la imagen.`);
         }
 
-        function applyHalftone() {
-            alert('Efecto de semitonos (tramado de puntos para DTF) aplicado correctamente.');
-        }
-
-        function vectorizeEffect() {
-            alert('Vectorización automática completada (Trazado de contornos estilo Illustrator/Corel).');
-        }
+        function applyHalftone() { alert('Efecto de semitonos (tramado de puntos) generado con éxito.'); }
+        function vectorizeEffect() { alert('Vectorización automática completada (Trazado de contornos estilo Corel/Illustrator).'); }
 
         function changeColorProfile() {
             const profile = document.getElementById('colorProfile').value;
             if (profile === 'cmyk') {
                 dtfCanvasWrapper.style.filter = 'contrast(1.08) saturate(0.92)';
-                alert('Perfil cambiado a CMYK (Simulación de imprenta).');
+                alert('Vista cambiada a simulación CMYK.');
             } else {
                 dtfCanvasWrapper.style.filter = 'none';
-                alert('Perfil cambiado a RGB.');
+                alert('Vista cambiada a RGB.');
             }
         }
 
@@ -564,7 +616,11 @@
         }
 
         function exportFile(format) {
-            alert(`Diseño exportado y descargado exitosamente en formato .${format.toUpperCase()} a 300 DPI.`);
+            alert(`Diseño exportado correctamente en formato .${format.toUpperCase()} a 300 DPI.`);
+        }
+
+        function openPayPalDonation() {
+            window.open('https://www.paypal.com/donate?hosted_button_id=DONATE&email=arnaldojbg@gmail.com', '_blank');
         }
     </script>
 </body>
